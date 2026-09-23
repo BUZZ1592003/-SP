@@ -1,26 +1,805 @@
 @import "tailwindcss";
 
+/* =========================================
+   DESIGN TOKENS
+========================================= */
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* COLORS */
+
+  --background: #050505;
+  --background-secondary: #0d0d0d;
+  --background-card: #111111;
+
+  --foreground: #ffffff;
+  --foreground-secondary: #d4d4d4;
+  --foreground-muted: #737373;
+
+  --accent: #ffd400;
+  --accent-hover: #ffe033;
+
+  --border: #262626;
+
+  /* RADIUS */
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-xl: 999px;
+
+  /* SHADOW */
+
+  --shadow-card: 0 20px 60px rgba(0, 0, 0, 0.35);
+
+  /* TRANSITIONS */
+
+  --transition-fast: 180ms ease;
+  --transition-normal: 300ms ease;
+  --transition-slow: 600ms ease;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+/* =========================================
+   RESET
+========================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 64px;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
 }
 
 body {
+  overflow-x: hidden;
+
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+
+  font-family: var(--font-geist-sans), Arial, Helvetica, sans-serif;
+
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  text-rendering: optimizeLegibility;
+}
+
+
+/* =========================================
+   TYPOGRAPHY
+========================================= */
+
+code,
+pre,
+kbd,
+samp {
+  font-family: var(--font-geist-mono), monospace;
+}
+
+
+/* =========================================
+   LINKS
+========================================= */
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+button {
+  font: inherit;
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* =========================================
+   MEDIA
+========================================= */
+
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+
+/* =========================================
+   SELECTION
+========================================= */
+
+::selection {
+  background: var(--accent);
+  color: #050505;
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050505;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #262626;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffd400;
+}
+
+
+/* =========================================
+   ACCESSIBILITY
+========================================= */
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+/* =========================================
+   HERO AMBIENT SYSTEM
+========================================= */
+
+@keyframes heroDataStream {
+  0% {
+    transform: translateX(-20vw);
+    opacity: 0;
+  }
+
+  15% {
+    opacity: 0.7;
+  }
+
+  85% {
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: translateX(140vw);
+    opacity: 0;
+  }
+}
+
+.hero-data-stream {
+  animation-name: heroDataStream;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+}
+
+@keyframes heroParticle {
+  0%,
+  100% {
+    transform: translateY(0) scale(0.7);
+    opacity: 0.2;
+  }
+
+  50% {
+    transform: translateY(-18px) scale(1.5);
+    opacity: 1;
+  }
+}
+
+.hero-particle {
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.8);
+  animation-name: heroParticle;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes heroGlow {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+
+  50% {
+    opacity: 0.7;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+.hero-glow {
+  animation: heroGlow 8s ease-in-out infinite;
+}
+
+@keyframes heroRing {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.hero-ring {
+  animation: heroRing 50s linear infinite;
+}
+
+.hero-ring-reverse {
+  animation: heroRing 65s linear infinite reverse;
+}
+/* =========================================
+   PROJECT VISUAL ANIMATIONS
+========================================= */
+
+@keyframes projectScan {
+  0% {
+    top: 8%;
+    opacity: 0;
+  }
+
+  10% {
+    opacity: 1;
+  }
+
+  90% {
+    opacity: 1;
+  }
+
+  100% {
+    top: 92%;
+    opacity: 0;
+  }
+}
+
+.project-scan-line {
+  animation: projectScan 3.5s linear infinite;
+}
+
+@keyframes projectLandmark {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.75);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+  }
+}
+
+.project-landmark {
+  box-shadow: 0 0 12px rgba(255, 212, 0, 0.9);
+  animation: projectLandmark 2s ease-in-out infinite;
+}
+
+@keyframes projectDataPoint {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: scale(0.7);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.project-data-point {
+  box-shadow: 0 0 14px rgba(255, 212, 0, 0.8);
+  animation: projectDataPoint 2.5s ease-in-out infinite;
+}
+
+@keyframes projectOrbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.project-orbit {
+  animation: projectOrbit 28s linear infinite;
+}
+
+.project-orbit-reverse {
+  animation: projectOrbit 38s linear infinite reverse;
+}
+
+@keyframes projectPortfolioGlow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+.project-portfolio-glow {
+  animation: projectPortfolioGlow 5s ease-in-out infinite;
+}
+
+@keyframes projectFloatSquare {
+  0%,
+  100% {
+    transform: translateY(0) rotate(12deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(22deg);
+  }
+}
+
+.project-floating-square {
+  animation: projectFloatSquare 6s ease-in-out infinite;
+}
+
+@keyframes projectFloatCircle {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(12px);
+  }
+}
+
+.project-floating-circle {
+  animation: projectFloatCircle 7s ease-in-out infinite;
+}
+
+/* =========================================
+   ABOUT DEVELOPMENT SYSTEM
+========================================= */
+
+@keyframes aboutSignal {
+  0% {
+    stroke-dashoffset: 900;
+  }
+
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+.about-signal-path {
+  stroke-dasharray: 18 35;
+  stroke-dashoffset: 900;
+  animation: aboutSignal 18s linear infinite;
+}
+
+@keyframes aboutOrbit {
+  from {
+    transform: rotate(0deg);
+    transform-origin: 400px 300px;
+  }
+
+  to {
+    transform: rotate(360deg);
+    transform-origin: 400px 300px;
+  }
+}
+
+.about-orbit {
+  animation: aboutOrbit 45s linear infinite;
+}
+
+@keyframes aboutCore {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.8);
+    transform-origin: 400px 300px;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.4);
+    transform-origin: 400px 300px;
+  }
+}
+
+.about-core {
+  filter: drop-shadow(0 0 10px rgba(255, 212, 0, 0.9));
+  animation: aboutCore 2.5s ease-in-out infinite;
+}
+
+@keyframes aboutCoreRing {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.9);
+    transform-origin: 400px 300px;
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: scale(1.1);
+    transform-origin: 400px 300px;
+  }
+}
+
+.about-core-ring {
+  animation: aboutCoreRing 4s ease-in-out infinite;
+}
+
+@keyframes aboutNode {
+  0%,
+  100% {
+    opacity: 0.65;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}
+
+.about-node {
+  animation: aboutNode 3s ease-in-out infinite;
+}
+
+.about-node-delay-1 {
+  animation-delay: -0.75s;
+}
+
+.about-node-delay-2 {
+  animation-delay: -1.5s;
+}
+
+.about-node-delay-3 {
+  animation-delay: -2.25s;
+}
+
+/* =========================================
+   SERVICES VISUAL SYSTEM
+========================================= */
+
+@keyframes servicesPreviewFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(12deg);
+  }
+
+  50% {
+    transform: translateY(-14px) rotate(20deg);
+  }
+}
+
+.services-preview-float {
+  animation: servicesPreviewFloat 6s ease-in-out infinite;
+}
+
+@keyframes servicesBusinessCircle {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.services-business-circle {
+  border-style: dashed;
+  animation: servicesBusinessCircle 25s linear infinite;
+}
+
+@keyframes servicesChart {
+  from {
+    stroke-dasharray: 0 1000;
+  }
+
+  to {
+    stroke-dasharray: 1000 0;
+  }
+}
+
+.services-chart-line {
+  animation: servicesChart 4s ease-in-out infinite alternate;
+}
+
+/* =========================================
+   CONTACT SIGNAL SYSTEM
+========================================= */
+
+@keyframes contactRadarScan {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.contact-radar-scanner {
+  animation: contactRadarScan 8s linear infinite;
+}
+
+@keyframes contactSignalRing {
+  0% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(0.4);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(5);
+  }
+}
+
+.contact-signal-ring {
+  animation: contactSignalRing 4s ease-out infinite;
+}
+
+.contact-signal-ring-delay {
+  animation-delay: -2s;
+}
+
+@keyframes contactCorePulse {
+  0%,
+  100% {
+    opacity: 0.65;
+    transform: scale(0.8);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.contact-core-dot {
+  box-shadow: 0 0 18px rgba(255, 212, 0, 0.9);
+  animation: contactCorePulse 2s ease-in-out infinite;
+}
+
+@keyframes contactNodePulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(255, 212, 0, 0);
+  }
+
+  50% {
+    box-shadow: 0 0 18px rgba(255, 212, 0, 0.55);
+  }
+}
+
+.contact-radar-node {
+  animation: contactNodePulse 3s ease-in-out infinite;
+}
+
+@keyframes contactPointPulse {
+  0%,
+  100% {
+    opacity: 0.25;
+    transform: scale(0.7);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+}
+
+.contact-radar-point {
+  animation: contactPointPulse 2.5s ease-in-out infinite;
+}
+
+.contact-radar-point-delay {
+  animation-delay: -1.2s;
+}
+
+@keyframes contactSignalGlow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.85);
+  }
+
+  50% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+.contact-signal-glow {
+  animation: contactSignalGlow 6s ease-in-out infinite;
+}
+/* =========================================
+   EXPERIENCE WORKFLOW
+========================================= */
+
+@keyframes experienceFlow {
+  from {
+    stroke-dashoffset: 1000;
+  }
+
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.experience-flow-path {
+  stroke-dasharray: 16 30;
+  stroke-dashoffset: 1000;
+  animation: experienceFlow 20s linear infinite;
+}
+
+@keyframes experienceCoreOrbit {
+  from {
+    transform: rotate(0deg);
+    transform-origin: 400px 300px;
+  }
+
+  to {
+    transform: rotate(360deg);
+    transform-origin: 400px 300px;
+  }
+}
+
+.experience-core-orbit {
+  animation: experienceCoreOrbit 30s linear infinite;
+}
+
+@keyframes experienceCorePulse {
+  0%,
+  100% {
+    opacity: 0.6;
+    transform: scale(0.8);
+    transform-origin: 400px 300px;
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.45);
+    transform-origin: 400px 300px;
+  }
+}
+
+.experience-core-dot {
+  filter: drop-shadow(0 0 12px rgba(255, 212, 0, 0.9));
+  animation: experienceCorePulse 2.5s ease-in-out infinite;
+}
+
+@keyframes experienceNodeFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+.experience-work-node {
+  animation: experienceNodeFloat 5s ease-in-out infinite;
+}
+
+
+/* =========================================
+   EXPERIENCE BACKGROUND HUD
+========================================= */
+
+@keyframes experienceOuterOrbit {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+.experience-outer-orbit {
+  animation: experienceOuterOrbit 65s linear infinite;
+}
+
+.experience-outer-orbit-reverse {
+  animation: experienceOuterOrbit 90s linear infinite reverse;
+}
+
+@keyframes experienceInnerOrbit {
+  from {
+    transform: rotate(0deg);
+    transform-origin: 400px 300px;
+  }
+
+  to {
+    transform: rotate(360deg);
+    transform-origin: 400px 300px;
+  }
+}
+
+.experience-inner-orbit {
+  animation: experienceInnerOrbit 35s linear infinite;
+}
+
+@keyframes experienceBackgroundGlow {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: translate(-50%, -50%) scale(0.9);
+  }
+
+  50% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1.15);
+  }
+}
+
+.experience-background-glow {
+  animation: experienceBackgroundGlow 7s ease-in-out infinite;
+}
+
+@keyframes experienceDataParticle {
+  0%,
+  100% {
+    opacity: 0.2;
+    transform: translateY(0) scale(0.7);
+  }
+
+  50% {
+    opacity: 1;
+    transform: translateY(-12px) scale(1.5);
+  }
+}
+
+.experience-data-particle {
+  box-shadow: 0 0 10px rgba(255, 212, 0, 0.45);
+  animation: experienceDataParticle 4s ease-in-out infinite;
+}
+
+.experience-data-particle-delay {
+  animation-delay: -2s;
 }
